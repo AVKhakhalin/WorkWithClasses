@@ -2,10 +2,13 @@ package WorkWithClasses;
 
 import java.io.IOException; // Объявление утилиты, для использования метода очистки окна в консоли
 import java.util.Scanner; // Объявление утилиты для использования ввода информации в консоль
+import java.util.Random; // Объявление утилиты для использования генератора случайных чисел
 
 public class MainApp
 {
     static Scanner scanner;
+    static Random random = new Random(); // Задание генератора случайных чисел
+    static final int numberMenuPositions = 3;
 
     public static void main(String[] args)
     {
@@ -43,7 +46,7 @@ public class MainApp
             System.out.println("    ...");
             System.out.println("    persArray[4] = new Person(...);\n");
             System.out.println(" 3. С помощью цикла вывести информацию только о сотрудниках старше 40 лет.");
-            if ((Math.abs(numberTask) > 2) || (errInput == true))
+            if ((Math.abs(numberTask) > numberMenuPositions) || (errInput == true))
             {
                 System.out.print("\n ВАЖНО: Нужно ввести одну из цифр 0, 1, 2 или 3.\n Знак точки \".\" вводить не нужно.\n Пожалуйста, попробуйте ввести цифру ещё раз.\n");
             }
@@ -106,6 +109,7 @@ public class MainApp
         System.out.println("      3. Внутри класса «Сотрудник» написать метод, который выводит информацию\n         об объекте в консоль.\n");
         System.out.println(" РЕШЕНИЕ:\n");
 
+        Сотрудник person = new Сотрудник("Хахалин Андрей Владимирович", "Безработный", "avkhakhalin@mail.ru", "89055364506", "0", 41);
     }
     //endregion
 
@@ -129,7 +133,16 @@ public class MainApp
         System.out.println("    persArray[4] = new Person(...);\n");
         System.out.println(" РЕШЕНИЕ:\n");
 
-
+        int numberPersons = 5;
+        Person[] newPersons = new Person[numberPersons];
+        newPersons = creatorPersons(numberPersons);
+        System.out.println(" Созданы следующие новые экземпляры класса \"Person\":\n");
+        for (int i = 0; i < numberPersons; i++)
+        {
+            System.out.print(" " + (i + 1) + ".");
+            newPersons[i].outputPerson();
+            System.out.println("");
+        }
     }
     //endregion
 
@@ -141,7 +154,58 @@ public class MainApp
         System.out.println("    С помощью цикла вывести информацию только о сотрудниках старше 40 лет.\n");
         System.out.println(" РЕШЕНИЕ:\n");
 
+        int numberOutputPositions = 0;
+        int numberPersons = 5;
+        Person[] newPersons = new Person[numberPersons];
+        newPersons = creatorPersons(numberPersons);
+        System.out.println(" Созданы записи о следующих новых сотрудниках:\n");
+        for (int i = 0; i < numberPersons; i++)
+        {
+            System.out.print(" " + (i + 1) + ".");
+            newPersons[i].outputPerson();
+            System.out.println("");
+        }
+        System.out.println("\n Из них к сотрудникам СТАРШЕ 40 ЛЕТ относятся следующие лица:\n");
+        for (int i = 0; i < numberPersons; i++)
+        {
+            if (newPersons[i].getAge() > 40)
+            {
+                numberOutputPositions++;
+                System.out.print(" " + numberOutputPositions + ".");
+                newPersons[i].outputPerson();
+                System.out.println("");
+            }
+        }
+        if (numberOutputPositions == 0)
+        {
+            System.out.println("\n Среди новых сотрудников лиц старше 40 лет нет.\n");
+        }
+    }
+    //endregion
 
+    //region Метод для решения задачи №2
+    public static Person[] creatorPersons(int numberNewPersons)
+    {
+        String[] surNames = {"Ivanov", "Bochkarev", "Utrov", "Kuznetcov", "Yakovlev"};
+        String[] names = {"Andrey", "Vladimir", "Nikolay", "Konstatntin", "Alexey"};
+        String[] positions = {"Middle/Senior Game Designer", "Game Designer (Senior)", "Junior Android developer", "Lead Android Java developer", "Android developer (Gamedev)"};
+        String tempSurName = "";
+        String tempName = "";
+        String tempPhone = "";
+
+        Person[] newPersons = new Person[numberNewPersons];
+        for (int i = 0; i < numberNewPersons; i++)
+        {
+            tempSurName = surNames[random.nextInt(numberNewPersons)];
+            tempName = names[random.nextInt(numberNewPersons)];
+            tempPhone = "8";
+            for (int j = 0; j <= 9; j++)
+            {
+                tempPhone = tempPhone + random.nextInt(10);
+            }
+            newPersons[i] = new Person(tempSurName + " " + tempName, positions[random.nextInt(numberNewPersons)], tempSurName.toLowerCase() + tempName.toLowerCase() + "@gmail.com", tempPhone, "1" + random.nextInt(10) + "0000", 25 + random.nextInt(30));
+        }
+        return newPersons;
     }
     //endregion
 
